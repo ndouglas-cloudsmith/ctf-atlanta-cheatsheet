@@ -34,6 +34,8 @@ while read -r pkg_name pkg_version; do
 done
 ```
 
+## Scanning multiple package registries
+
 
 |  Package Manager |    Ecosystem (Language/OS)    |         List Command       |
 |   -----------    |        -------------          |         ------------       |
@@ -45,3 +47,9 @@ done
 | ```apk```        | Alpine (System)               | ```apk info```             |
 
 
+See all dependencies in a container (split out by upstream source)
+```
+docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest npm list
+docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest gem list
+docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest pip list
+```
