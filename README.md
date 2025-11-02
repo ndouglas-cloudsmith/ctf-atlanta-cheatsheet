@@ -1,5 +1,5 @@
-# ctf-atlanta-cheatsheet
-Reference repo for commands to progress in the labs
+# CTF Atlanta Cheatsheet
+Reference repository for commands to progress in the CTF labs
 
 ## Python scanning
 
