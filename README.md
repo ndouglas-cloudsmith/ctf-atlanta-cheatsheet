@@ -53,3 +53,22 @@ docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:lat
 docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest gem list
 docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest pip list
 ```
+
+Running a single docker run command that starts a shell (```sh```) inside the container. <br/>
+From that shell, we can first check if a command exists before trying to run it.
+```
+docker run --rm docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest \
+sh -c '
+for pm in npm gem pip; do
+  echo "--- Checking $pm ---"
+  if command -v $pm >/dev/null; then
+    # If command exists, run its list command
+    $pm list
+  else
+    # If command does not exist, print a clean message
+    echo "No packages matched for $pm (command not found)"
+  fi
+  echo "" # Add a newline for cleaner formatting
+done
+' 2>/dev/null
+```
