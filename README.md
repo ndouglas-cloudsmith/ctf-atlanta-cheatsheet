@@ -33,3 +33,15 @@ while read -r pkg_name pkg_version; do
   jq '.vulns[] | { id, summary, details }'
 done
 ```
+
+
+|  Package Manager |    Ecosystem (Language/OS)    |         List Command       |
+|   -----------    |        -------------          |         ------------       |
+| ```apt```        | Debian/Ubuntu (System)        | ```apt list --installed``` |
+| ```pip```        | **Python**                    | ```pip list```             |
+| ```npm```        | **JavaScript (Node.js)**      | ```npm list```             |
+| ```gem```        | Ruby                          | ```gem list```             |
+| ```mvn```        | Java (Maven)                  | ```mvn dependency:list```  |
+| ```apk```        | Alpine (System)               | ```apk info```             |
+
+
