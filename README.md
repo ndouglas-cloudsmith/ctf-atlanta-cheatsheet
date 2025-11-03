@@ -72,3 +72,24 @@ for pm in npm gem pip; do
 done
 ' 2>/dev/null
 ```
+
+## Kubernetes-specific CVEs
+If you want a neat list of 2025 CVEs with key info:
+```
+curl -sL https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json \
+  | jq '.items 
+        | map(select(.date_published | startswith("2025-"))) 
+        | sort_by(.date_published) 
+        | reverse 
+        | map({id, date_published, summary})'
+```
+
+Or for a simple table output:
+```
+curl -sL https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json \
+  | jq -r '.items 
+            | map(select(.date_published | startswith("2025-"))) 
+            | sort_by(.date_published) 
+            | reverse[] 
+            | "\(.date_published)\t\(.id)\t\(.summary)"'
+```
