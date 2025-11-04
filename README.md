@@ -93,3 +93,10 @@ curl -sL https://kubernetes.io/docs/reference/issues-security/official-cve-feed/
             | reverse[] 
             | "\(.date_published)\t\(.id)\t\(.summary)"'
 ```
+
+## OSV.dev filters
+```
+curl -s -X POST "https://api.osv.dev/v1/query" \
+     -d '{"package": {"name": "aliyun-oss2", "ecosystem": "PyPI"}}' \
+     | jq '.vulns[] | {id, summary}'
+```
