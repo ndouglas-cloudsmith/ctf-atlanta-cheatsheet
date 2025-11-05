@@ -100,3 +100,18 @@ curl -s -X POST "https://api.osv.dev/v1/query" \
      -d '{"package": {"name": "aliyun-oss2", "ecosystem": "PyPI"}}' \
      | jq '.vulns[] | {id, summary}'
 ```
+
+```
+curl -s -X POST https://api.osv.dev/v1/query -d '{"package":{"ecosystem":"PyPI","name":"Django"},"version":"2.1"}' -H 'Content-Type: application/json' | \
+jq '.vulns[] | . as $vuln | .affected[] | { id: $vuln.id, summary: $vuln.summary, severity: $vuln.database_specific.severity, "package name": .package.name, ecosystem: .package.ecosystem }'
+```
+
+```
+curl -s -X POST https://api.osv.dev/v1/query -d '{"package":{"ecosystem":"PyPI","name":"Flask"},"version":"1.0.2"}' -H 'Content-Type: application/json' | \
+jq '.vulns[] | . as $vuln | .affected[] | { id: $vuln.id, summary: $vuln.summary, severity: $vuln.database_specific.severity, "package name": .package.name, ecosystem: .package.ecosystem }'
+```
+
+```
+curl -s -X POST https://api.osv.dev/v1/query -d '{"package":{"ecosystem":"PyPI","name":"urllib3"},"version":"1.24.1"}' -H 'Content-Type: application/json' | \
+jq '.vulns[] | . as $vuln | .affected[] | { id: $vuln.id, summary: $vuln.summary, severity: $vuln.database_specific.severity, "package name": .package.name, ecosystem: .package.ecosystem }'
+```
