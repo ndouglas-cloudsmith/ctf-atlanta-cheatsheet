@@ -115,3 +115,17 @@ jq '.vulns[] | . as $vuln | .affected[] | { id: $vuln.id, summary: $vuln.summary
 curl -s -X POST https://api.osv.dev/v1/query -d '{"package":{"ecosystem":"PyPI","name":"urllib3"},"version":"1.24.1"}' -H 'Content-Type: application/json' | \
 jq '.vulns[] | . as $vuln | .affected[] | { id: $vuln.id, summary: $vuln.summary, severity: $vuln.database_specific.severity, "package name": .package.name, ecosystem: .package.ecosystem }'
 ```
+
+## Exploit Checker
+```
+wget https://raw.githubusercontent.com/ndouglas-cloudsmith/exploit-check/refs/heads/main/exploit-check.sh
+chmod +x exploit-check.sh
+```
+If you need to update the scanner (EPSS records are refreshed daily), run the below command:
+```
+./exploit-check.sh update
+```
+To query a specific CVE (for example, CVE-2021-44228), run the below command:
+```
+./exploit-check.sh query CVE-2021-44228
+```
