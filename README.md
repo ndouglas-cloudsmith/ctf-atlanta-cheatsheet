@@ -158,3 +158,53 @@ kubectl get configauditreports replicaset-insecure-worker-764dcb5c98 -n google -
   | jq '.report.checks[] | select(.severity == "HIGH")'
 ```
 
+
+## Flag 7 deployment
+
+```
+kubectl create namespace flag7
+cat <<'EOF' > deployment7.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ctf-vulnerable-app
+  namespace: flag7
+  labels:
+    app: ctf-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ctf-app
+  template:
+    metadata:
+      labels:
+        app: ctf-app
+    spec:
+      containers:
+      - name: malware-test-container
+        image: docker.cloudsmith.io/acme-corporation/acme-repo-one/malware-test-image:latest
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          set -e
+
+          echo "Updating apt cache and installing build dependencies for Pillow..."
+          apt-get update
+          apt-get install -y build-essential libjpeg-dev zlib1g-dev
+
+          echo "Installing *additional* vulnerable dependencies (with --no-deps)..."
+
+          # This is the corrected line with --no-deps
+          /usr/local/bin/python -m pip install --no-deps "Django==2.1" "Pillow==9.0.0" "Flask==1.0.2"
+
+          echo "Cleaning up apt cache..."
+          rm -rf /var/lib/apt/lists/*
+
+          echo "Installation complete. Starting original application...";
+          python -m http.server 8080 --directory /app
+        ports:
+        - containerPort: 8080
+EOF
+kubectl apply -f deployment7.yaml
+```
