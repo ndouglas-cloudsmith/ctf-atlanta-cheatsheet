@@ -1,0 +1,34 @@
+data:
+  # ... (your existing Stripe and Slack keys) ...
+
+  # --- NEW SUGGESTIONS ---
+
+  # 1. Google Cloud API Key (starts with "AIzaSy")
+  GCP_API_KEY: "AIzaSyB-1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6"
+
+  # 2. "Realistic" AWS Secret (just a 40-char Base64 string)
+  # This relies on high-entropy detection, not a prefix.
+  AWS_SECRET_REALISTIC: "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0"
+
+  # 3. "Realistic" GitHub Token (starts with "ghp_")
+  # Use a random string, not the known example.
+  GITHUB_TOKEN_REALISTIC: "ghp_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0"
+
+  # 4. SendGrid API Key (starts with "SG.")
+  SENDGRID_API_KEY: "SG.a1b2c3d4e5f6g7h8.i9j0k1l2m3n4o5p6q7r8s9t0-a1b"
+  
+  # 5. Twilio Keys (starts with "AC..." for SID and "SK..." for Secret)
+  TWILIO_ACCOUNT_SID: "ACa1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  TWILIO_AUTH_TOKEN: "SKa1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6"
+  
+  # 6. A "complete" looking fake Private Key
+  # Your current one has ".... (dummy data for test) ...." which breaks the format.
+  # A scanner will flag the BEGIN/END block regardless, but a valid-looking
+  # one is better for testing.
+  ssh.key.realistic: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEogIBAAKCAQEAuP/dbordPBznNAgQ5zYkFpI6RZ+xWLEwE/bUZlqaUe8mJ4c0
+    B/u/tF4n9v6i5/a3Ua2Z5Yc2EASbED/hdlQzL1sD0YsvYk9E0U6y2b6dRwF3g3a7
+    Q4M4nqlw3sNcad6sJjR3LzPh8A3NLnlyiMfGCU3nQ9Tqjn9Jqprt+dlSgGgA5Q/g
+    nWP1/sM/6T1N0Lg+sYwS+jKaqq1ihdvxyWc7EaweQJAYeT8I6lXmmsw==
+    -----END RSA PRIVATE KEY-----
