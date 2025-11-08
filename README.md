@@ -140,8 +140,21 @@ To query a specific CVE (for example, CVE-2021-44228), run the below command:
 
 ## Trivy Operator
 
+If you want to list all reports and extract only the 3 fields:
+```
+kubectl get configauditreports -A -o json \
+  | jq -r '.items[] | .metadata.name as $name | .report.checks[] | [$name, .severity, .checkID, .description] | @tsv'
+```
+
+You can alternatively just filter for ```severity```, ```CheckID``` and ```Description```:
+```
+kubectl get configauditreport replicaset-insecure-worker-764dcb5c98 -n google \
+  -o jsonpath='{range .report.checks[*]}{.severity}{"\t"}{.checkID}{"\t"}{.description}{"\n"}{end}'
+```
+
 Filtering only for ```HIGH``` severity misconfigurations on a given deployment:
 ```
 kubectl get configauditreports replicaset-insecure-worker-764dcb5c98 -n google -o json \
   | jq '.report.checks[] | select(.severity == "HIGH")'
 ```
+
