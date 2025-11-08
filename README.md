@@ -137,3 +137,11 @@ To query a specific CVE (for example, CVE-2021-44228), run the below command:
 ```
 ./exploit-check.sh query CVE-2021-44228
 ```
+
+## Trivy Operator
+
+Filtering only for ```HIGH``` severity misconfigurations on a given deployment:
+```
+kubectl get configauditreports replicaset-insecure-worker-764dcb5c98 -n google -o json \
+  | jq '.report.checks[] | select(.severity == "HIGH")'
+```
