@@ -251,3 +251,11 @@ directory traversal:
 ```
 kubectl logs -l app.kubernetes.io/name=falco -n falco -c falco | grep "directory traversal"
 ```
+```
+kubectl create namespace google
+kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/bad-deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/bad-config.yaml
+kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/microservices-demo/refs/heads/main/release/kubernetes-manifests.yaml -n google
+kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/malicious-config.yaml  -n google
+kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/dummy-config.yaml -n google
+```
