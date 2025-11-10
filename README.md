@@ -2,7 +2,21 @@
 Reference repository for commands to progress in the CTF labs
 
 
-## Flag 5 queries
+## Flag 1
+```
+./exploit-check.sh  images namespace -A
+```
+
+```
+./exploit-check.sh scan image docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest
+```
+
+```
+./exploit-check.sh query CVE-2024-6345 --package-info
+```
+
+
+## Flag 5
 ```
 curl -Ls https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json | jq '.items[] | select(.id == "CVE-2017-1002100")'
 ```
