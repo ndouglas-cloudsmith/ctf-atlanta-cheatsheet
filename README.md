@@ -1,6 +1,21 @@
 # CTF Atlanta Cheatsheet
 Reference repository for commands to progress in the CTF labs
 
+
+## Flag 5 queries
+```
+curl -Ls https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json | jq '.items[] | select(.id == "CVE-2017-1002100")'
+```
+
+```
+curl -Ls https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json | jq '.items[] | select((.summary | ascii_downcase | contains("podsecuritypolicy")) or (.content_text | ascii_downcase | contains("podsecuritypolicy")))'
+```
+
+
+```
+curl -Ls https://kubernetes.io/docs/reference/issues-security/official-cve-feed/index.json | jq '.items[] | select(.id == "CVE-2020-8555")'
+```
+
 ## Python scanning
 
 ```
