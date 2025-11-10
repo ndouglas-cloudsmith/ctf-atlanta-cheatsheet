@@ -8,7 +8,7 @@ Reference repository for commands to progress in the CTF labs
 ```
 
 ```
-./exploit-check.sh scan image docker.cloudsmith.io/acme-corporation/acme-repo-one/ai-image:latest
+./exploit-check.sh scan image openpolicyagent/gatekeeper:v3.13.4
 ```
 
 ```
