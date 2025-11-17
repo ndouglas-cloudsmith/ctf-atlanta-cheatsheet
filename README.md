@@ -260,6 +260,7 @@ kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-20
 kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/dummy-config.yaml -n google
 ```
 
+Workflow for testing typosquatting policy in Cloudsmith
 ```
 mkdir reuests-test
 cd reuests-test
