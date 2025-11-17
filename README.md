@@ -259,3 +259,11 @@ kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/microserv
 kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/malicious-config.yaml  -n google
 kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-2025/refs/heads/main/dummy-config.yaml -n google
 ```
+
+```
+mkdir reuests-test
+cd reuests-test
+echo "from setuptools import setup; setup(name='reuests', version='71.71.72', description='Fake package for testing OSV', packages=[])" > setup.py
+python3 setup.py sdist bdist_wheel
+cloudsmith push python acme-corporation/acme-repo-one dist/reuests-71.71.72-py3-none-any.whl
+```
