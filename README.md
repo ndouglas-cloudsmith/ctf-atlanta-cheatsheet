@@ -268,3 +268,62 @@ echo "from setuptools import setup; setup(name='reuests', version='71.71.72', de
 python3 setup.py sdist bdist_wheel
 cloudsmith push python acme-corporation/acme-repo-one dist/reuests-71.71.72-py3-none-any.whl
 ```
+
+Need to create a Docker container that we know contains malware and several vulnerabilities for the scanner
+```
+ORG="acme-corporation"
+REPO="acme-repo-one"
+IMAGE_NAME="osv-test-image"
+TAG="latest"
+TARGET_IMAGE="docker.cloudsmith.io/$ORG/$REPO/$IMAGE_NAME:$TAG"
+
+
+mkdir -p build_artifacts
+cd build_artifacts
+
+echo "--- Step 1: Creating Fake Package 'reuests' ---"
+mkdir -p reuests
+echo "from setuptools import setup; setup(name='reuests', version='71.71.72', description='Fake malicious package', packages=[])" > reuests/setup.py
+# Build Wheel
+cd reuests && python3 setup.py bdist_wheel -d ../dist && cd ..
+
+echo "--- Step 2: Creating Fake Package 'fabrice' ---"
+mkdir -p fabrice
+echo "from setuptools import setup; setup(name='fabrice', version='6.6.6', description='Fake malicious package 2', packages=[])" > fabrice/setup.py
+# Build Wheel
+cd fabrice && python3 setup.py bdist_wheel -d ../dist && cd ..
+
+echo "--- Step 3: Downloading Real Package 'langflow' ---"
+# We use --no-deps to keep the image small, only getting the specific wheel
+pip download langflow==1.2.0 --dest dist --no-deps
+
+echo "--- Step 4: Creating Dockerfile ---"
+cat <<EOF > Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy the wheels we just created/downloaded
+COPY dist/*.whl ./
+
+# Install them. 
+# This generates the .dist-info folders that OSV scanners look for.
+RUN pip install *.whl
+
+# Clean up wheels to simulate a clean environment (optional, but cleaner)
+RUN rm *.whl
+
+CMD ["python3", "-c", "print('Vulnerable image loaded')"]
+EOF
+
+echo "--- Step 5: Building and Pushing to Cloudsmith ---"
+
+
+# Build the image
+docker build -t $TARGET_IMAGE .
+
+# Push the image
+docker push $TARGET_IMAGE
+
+echo "Done! Image pushed to: $TARGET_IMAGE"
+```
