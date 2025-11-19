@@ -264,7 +264,7 @@ Workflow for testing typosquatting policy in Cloudsmith
 ```
 ORG="acme-corporation"
 REPO="acme-repo-one"
-IMAGE_NAME="osv-test-image"
+IMAGE_NAME="boring-image"
 TAG="latest"
 TARGET_IMAGE="docker.cloudsmith.io/$ORG/$REPO/$IMAGE_NAME:$TAG"
 
