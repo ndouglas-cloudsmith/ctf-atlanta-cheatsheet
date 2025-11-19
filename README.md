@@ -262,15 +262,6 @@ kubectl apply -f https://raw.githubusercontent.com/ndouglas-cloudsmith/kcd-uk-20
 
 Workflow for testing typosquatting policy in Cloudsmith
 ```
-mkdir reuests-test
-cd reuests-test
-echo "from setuptools import setup; setup(name='reuests', version='71.71.72', description='Fake package for testing OSV', packages=[])" > setup.py
-python3 setup.py sdist bdist_wheel
-cloudsmith push python acme-corporation/acme-repo-one dist/reuests-71.71.72-py3-none-any.whl
-```
-
-Need to create a Docker container that we know contains malware and several vulnerabilities for the scanner
-```
 ORG="acme-corporation"
 REPO="acme-repo-one"
 IMAGE_NAME="osv-test-image"
@@ -280,6 +271,9 @@ TARGET_IMAGE="docker.cloudsmith.io/$ORG/$REPO/$IMAGE_NAME:$TAG"
 
 mkdir -p build_artifacts
 cd build_artifacts
+
+# Prepare a directory for your mock wheels
+mkdir -p dist
 
 echo "--- Step 1: Creating Fake Package 'reuests' ---"
 mkdir -p reuests
@@ -293,9 +287,10 @@ echo "from setuptools import setup; setup(name='fabrice', version='6.6.6', descr
 # Build Wheel
 cd fabrice && python3 setup.py bdist_wheel -d ../dist && cd ..
 
-echo "--- Step 3: Downloading Real Package 'langflow' ---"
-# We use --no-deps to keep the image small, only getting the specific wheel
-pip download langflow==1.2.0 --dest dist --no-deps
+# We will skip downloading langflow to avoid dependency resolution issues 
+# when installing from a local folder with other wheels that conflict.
+echo "--- Step 3: Skipping Langflow download for cleaner Dockerfile build ---"
+
 
 echo "--- Step 4: Creating Dockerfile ---"
 cat <<EOF > Dockerfile
@@ -303,21 +298,26 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy the wheels we just created/downloaded
+# Step 1: Install langflow and its dependencies directly from PyPI.
+# This ensures a correct dependency resolution (langflow==1.2.0 requires 
+# langchain==0.3.10, which resolves the conflict).
+RUN pip install langflow==1.2.0
+
+# Copy the mock wheels we just created
 COPY dist/*.whl ./
 
-# Install them. 
-# This generates the .dist-info folders that OSV scanners look for.
+# Step 2: Install the mock wheels. 
+# They usually don't have complex dependencies, so this should work fine 
+# after the main application is installed.
 RUN pip install *.whl
 
-# Clean up wheels to simulate a clean environment (optional, but cleaner)
+# Clean up wheels to simulate a clean environment
 RUN rm *.whl
 
 CMD ["python3", "-c", "print('Vulnerable image loaded')"]
 EOF
 
 echo "--- Step 5: Building and Pushing to Cloudsmith ---"
-
 
 # Build the image
 docker build -t $TARGET_IMAGE .
